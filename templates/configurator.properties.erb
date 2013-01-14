@@ -1,0 +1,38 @@
+SERVER_URL=<%= @openam_server_url %>
+DEPLOYMENT_URI=<%= @openam_deployment_uri %>
+BASE_DIR=<%= @openam_config_dir %>
+locale=<%= @openam_locale %>
+PLATFORM_LOCALE=<%= @openam_locale %>
+AM_ENC_KEY=<%= @openam_encryption_key %>
+ADMIN_PWD=<%= @openam_amadmin %>
+AMLDAPUSERPASSWD=<%= @openam_amldapuser %>
+COOKIE_DOMAIN=<%= @openam_cookie_domain %>
+
+DATA_STORE=dirServer
+DIRECTORY_SSL=SIMPLE
+DIRECTORY_SERVER=<%= @opendj_host %>
+DIRECTORY_PORT=<%= @opendj_ldap_port %>
+DIRECTORY_ADMIN_PORT=<%= @opendj_admin_port %>
+DIRECTORY_JMX_PORT=<%= @opendj_jmx_port %>
+ROOT_SUFFIX=<%= @openam_configstore_suffix %>
+DS_DIRMGRDN=<%= @openam_configstore_binddn %>
+DS_DIRMGRPASSWD=<%= @openam_configstore_bindpw %>
+
+USERSTORE_TYPE=LDAPv3ForOpenDS
+USERSTORE_SSL=SIMPLE
+USERSTORE_HOST=<%= @opendj_host %>
+USERSTORE_PORT=<%= @opendj_ldap_port %>
+USERSTORE_SUFFIX=<%= @openam_userstore_suffix %>
+USERSTORE_MGRDN=<%= @openam_userstore_binddn %>
+USERSTORE_PASSWD=<%= @openam_userstore_bindpw %>
+
+<% if @existingserverid %>
+# Add to existing OpenAM deployment
+existingserverid=<%= @existingserverid %>
+<% else %>
+<% if @openam_site_url %>
+# Create site if parameter is provided
+LB_SITE_NAME=<%= @environment %>
+LB_PRIMARY_URL=<%= @openam_site_url %>
+<% end %>
+<% end %>

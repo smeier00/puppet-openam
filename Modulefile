@@ -1,0 +1,7 @@
+name        'conduct-openam'
+version     '0.0.1'
+author      'Conduct AS'
+license     'Simplified BSD License'
+summary     'OpenAM deployment and configuration module'
+description 'Module for deployment and configuration of ForgeRock OpenAM including admin tools.'
+dependency  'conduct/opendj', '>= 0.0.1'
