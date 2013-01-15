@@ -1,38 +1,38 @@
-SERVER_URL=<%= @openam_server_url %>
-DEPLOYMENT_URI=<%= @openam_deployment_uri %>
-BASE_DIR=<%= @openam_config_dir %>
-locale=<%= @openam_locale %>
-PLATFORM_LOCALE=<%= @openam_locale %>
-AM_ENC_KEY=<%= @openam_encryption_key %>
-ADMIN_PWD=<%= @openam_amadmin %>
-AMLDAPUSERPASSWD=<%= @openam_amldapuser %>
-COOKIE_DOMAIN=<%= @openam_cookie_domain %>
+SERVER_URL=<%= scope.lookupvar('openam::config::server_url') %>
+DEPLOYMENT_URI=<%= scope.lookupvar('openam::deployment_uri') %>
+BASE_DIR=<%= scope.lookupvar('openam::config_dir') %>
+locale=<%= scope.lookupvar('openam::locale') %>
+PLATFORM_LOCALE=<%= scope.lookupvar('openam::locale') %>
+AM_ENC_KEY=<%= scope.lookupvar('openam::encryption_key') %>
+ADMIN_PWD=<%= scope.lookupvar('openam::amadmin') %>
+AMLDAPUSERPASSWD=<%= scope.lookupvar('openam::amldapuser') %>
+COOKIE_DOMAIN=<%= scope.lookupvar('openam::cookie_domain') %>
 
 DATA_STORE=dirServer
 DIRECTORY_SSL=SIMPLE
-DIRECTORY_SERVER=<%= @opendj_host %>
-DIRECTORY_PORT=<%= @opendj_ldap_port %>
-DIRECTORY_ADMIN_PORT=<%= @opendj_admin_port %>
-DIRECTORY_JMX_PORT=<%= @opendj_jmx_port %>
-ROOT_SUFFIX=<%= @openam_configstore_suffix %>
-DS_DIRMGRDN=<%= @openam_configstore_binddn %>
-DS_DIRMGRPASSWD=<%= @openam_configstore_bindpw %>
+DIRECTORY_SERVER=<%= scope.lookupvar('opendj::host') %>
+DIRECTORY_PORT=<%= scope.lookupvar('opendj::ldap_port') %>
+DIRECTORY_ADMIN_PORT=<%= scope.lookupvar('opendj::admin_port') %>
+DIRECTORY_JMX_PORT=<%= scope.lookupvar('opendj::jmx_port') %>
+ROOT_SUFFIX=<%= scope.lookupvar('openam::configstore_suffix') %>
+DS_DIRMGRDN=<%= scope.lookupvar('openam::configstore_binddn') %>
+DS_DIRMGRPASSWD=<%= scope.lookupvar('openam::configstore_bindpw') %>
 
 USERSTORE_TYPE=LDAPv3ForOpenDS
 USERSTORE_SSL=SIMPLE
-USERSTORE_HOST=<%= @opendj_host %>
-USERSTORE_PORT=<%= @opendj_ldap_port %>
-USERSTORE_SUFFIX=<%= @openam_userstore_suffix %>
-USERSTORE_MGRDN=<%= @openam_userstore_binddn %>
-USERSTORE_PASSWD=<%= @openam_userstore_bindpw %>
+USERSTORE_HOST=<%= scope.lookupvar('opendj::host') %>
+USERSTORE_PORT=<%= scope.lookupvar('opendj::ldap_port') %>
+USERSTORE_SUFFIX=<%= scope.lookupvar('openam::userstore_suffix') %>
+USERSTORE_MGRDN=<%= scope.lookupvar('openam::userstore_binddn') %>
+USERSTORE_PASSWD=<%= scope.lookupvar('openam::userstore_bindpw') %>
 
-<% if @existingserverid %>
+<% if @master %>
 # Add to existing OpenAM deployment
-existingserverid=<%= @existingserverid %>
+existingserverid=<%= @master %>
 <% else %>
-<% if @openam_site_url %>
+<% if scope.lookupvar('openam::site_url') %>
 # Create site if parameter is provided
 LB_SITE_NAME=<%= @environment %>
-LB_PRIMARY_URL=<%= @openam_site_url %>
+LB_PRIMARY_URL=<%= scope.lookupvar('openam::site_url') %>
 <% end %>
 <% end %>

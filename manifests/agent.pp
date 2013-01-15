@@ -10,30 +10,52 @@
 #
 # Copyright (c) 2013 Conduct AS
 #
-class openam::agent (
-  $realm = "/",
-  $file,
-  $type,
-  $name,
+define openam::agent (
+  $name = $title,
+  $realm = '/',
+  $type  = 'WebAgent',
+  $agent_url = $url,
 ) {
-  $ssoadm = "/usr/local/bin/ssoadm"
-  $agents = "${openam_conf_dir}/puppet/agents"
-    
-  file { "${agents}":
+
+  $logout_urls        = [ "${openam::site_url}/UI/Logout?realm=${realm}" ],
+  $login_urls         = [ "${openam::site_url}/UI/Login?realm=${realm}" ],
+  $server_url         = "${openam::site_url}",
+  $agent_profile_dir  = "${openam::config_dir}/.puppet/agents"
+  $agent_profile_file = "${agent_profile_dir}/${type}_${name}"
+  $ssoadm             = "/usr/local/bin/ssoadm"
+
+  file { "${openam::config_dir}/.puppet":
     ensure => directory,
-    owner  => "${openam_tomcat_user}",
-    mode   => 600,
+    owner  => "${openam::tomcat_user}",
+    mode   => 0700,
+  }
+ 
+  file { "${agent_profile_dir}":
+    ensure  => directory,
+    owner   => "${openam::tomcat_user}",
+    mode    => 600,
   }
 
-  file { "${agents}/${file}":
-    ensure => present,
-    source => "puppet:///agents/${file}",
+  file { "${agent_profile_file}":
+    ensure  => present,
+    content => template("${module_name}/agent_profile.erb"),
+    require => File["${agent_profile_dir}"],
+    mode    => 0400,
+    owner   => "${openam::tomcat_user}",
+    group   => "${openam::tomcat_user}",
+    notify  => Exec["update agent profile"],
   }
 
+  exec { "update agent profile":
+    command     => "${ssoadm} create-agent -e ${realm} -t ${type} -b ${name} -s ${server_url} -g ${agent_url} -D ${agent_profile_file}",
+    onlyif      => "${ssoadm} list-agents -e ${realm} -t ${type} | grep ^'${name} '",
+    refreshonly => true,
+    notify      => Exec["create agent profile"],
+  }
+  
   exec { "create agent profile":
-    command   => "${ssoadm} create-agent -e ${realm} -t ${type} -b ${name} -D ${file}",
-    unless    => "${ssoadm} list-agents -e ${realm} -t ${type} | grep ^'${name} '", 
-    subscribe => File["${file}"],
+    command     => "${ssoadm} create-agent -e ${realm} -t ${type} -b ${name} -s ${server_url} -g ${agent_url} -D ${agent_profile_file}",
+    unless      => "${ssoadm} list-agents -e ${realm} -t ${type} | grep ^'${name} '", 
+    refreshonly => true,
   } 
-
 }

@@ -13,27 +13,21 @@
 # Copyright (c) 2013 Conduct AS
 #
 
-class openam::deploy (
-  $openam_tomcat_user     = hiera('openam_tomcat_user', $::ews_service_user),
-  $openam_tomcat_home     = hiera('openam_tomcat_home', $::openam_tomcat_home),
-  $openam_version         = hiera('openam_version', $::openam_version),
-  $openam_build           = hiera('openam_build', $::openam_build),
-  $openam_deployment_uri  = hiera('openam_deployment_uri', $::openam_deployment_uri),
-) {
+class openam::deploy {
+  $war = "openam_${openam::version}.war"
 
-  $openam_war = "openam_${openam_version}.war"
-  file { "/var/tmp/${openam_war}":
+  file { "/var/tmp/${war}":
     ensure => present,
-    owner  => "${openam_tomcat_user}",
-    group  => "${openam_tomcat_user}",
+    owner  => "${openam::tomcat_user}",
+    group  => "${openam::tomcat_user}",
     mode   => 0755,
-    source => "puppet:///modules/openam/${openam_war}",
+    source => "puppet:///openam/${war}",
   }
 
   exec { "deploy openam":
     cwd     => '/var/tmp',
-    command => "/bin/cp /var/tmp/${openam_war} ${openam_tomcat_home}/webapps${openam_deployment_uri}.war",
-    require => File["/var/tmp/${openam_war}"],
-    creates => "${openam_tomcat_home}/webapps${openam_deployment_uri}",
+    command => "/bin/cp /var/tmp/${war} ${openam::tomcat_home}/webapps${openam::deployment_uri}.war",
+    require => File["/var/tmp/${war}"],
+    creates => "${openam::tomcat_home}/webapps${openam::deployment_uri}",
   }
 }
