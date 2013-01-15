@@ -1,5 +1,15 @@
-Class['openam'] -> Class['openam::tools']
-
+# == Class: openam::tools
+#
+# Module for deployment of ssoAdminTools.
+#
+# === Authors
+#
+# Conduct AS <iam-nsb@conduct.no>
+#
+# === Copyright
+#
+# Copyright (c) 2013 Conduct AS
+#
 class openam::tools {
 
   package { 'unzip': ensure => present }

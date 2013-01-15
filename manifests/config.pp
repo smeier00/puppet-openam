@@ -20,7 +20,6 @@ class openam::config (
   $openam_server_url      = "${openam_server_protocol}://${fqdn}:${openam_server_port}",
   $openam_war             = "openam_${openam_version}.war",
 
-  # OpenAM datastores
   $openam_userstore_suffix   = hiera('openam_userstore_suffix', $::openam_userstore_suffix),
   $openam_userstore_binddn   = hiera('openam_userstore_binddn', $::openam_userstore_binddn),
   $openam_userstore_bindpw   = hiera('openam_userstore_bindpw', $::openam_userstore_bindpw),

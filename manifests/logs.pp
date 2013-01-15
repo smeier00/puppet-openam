@@ -1,12 +1,26 @@
-Class['openam'] -> Class['openam::logs']
-
+# == Class: openam::logs
+#
+# Symlinks OpenAM log directories to a more suited location.
+#
+# === Authors
+#
+# Conduct AS <iam-nsb@conduct.no>
+#
+# === Copyright
+#
+# Copyright (c) 2013 Conduct AS
+#
 class openam::logs (
-  $openam_config_dir     = $::openam_config_dir,
-  $openam_deployment_uri = $::openam_deployment_uri,
-  $openam_log_dir        = $::openam_log_dir,
+  $openam_tomcat_user    = hiera('openam_tomcat_user', $::ews_service_user),
+  $openam_config_dir     = hiera('openam_config_dir', $::openam_config_dir),
+  $openam_deployment_uri = hiera('openam_deployment_uri', $::openam_deployment_uri),
+  $openam_log_dir        = hiera('openam_log_dir, $::openam_log_dir),
 ) {
 
-  file { [ "${openam_log_dir}", "${openam_log_dir}/logs", "${openam_log_dir}/debug", "${openam_log_dir}/stats" ]:
+  file { [ "${openam_log_dir}",
+           "${openam_log_dir}/logs",
+           "${openam_log_dir}/debug",
+           "${openam_log_dir}/stats" ]:
     ensure  => directory,
     owner   => "${openam_tomcat_user}",
     group   => "${openam_tomcat_user}",

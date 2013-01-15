@@ -1,11 +1,23 @@
+# == Class: openam::datastore
+#
+# Configuration of user and configuration stores for OpenAM
+#
+# === Authors
+#
+# Conduct AS <iam-nsb@conduct.no>
+#
+# === Copyright
+#
+# Copyright (c) 2013 Conduct AS
+#
+
 class openam::datastore (
   $opendj_admin_user         = hiera('opendj_admin_user', $::opendj_admin_user),
   $opendj_admin_password     = hiera('opendj_admin_password', $::opendj_admin_password),
   $openam_userstore_suffix   = hiera('openam_userstore_suffix', $::openam_userstore_suffix),
   $openam_configstore_suffix = hiera('openam_configstore_suffix', $::openam_configstore_suffix),
 ) {
-
-  $opendj_home = '/var/lib/opendj'
+  $opendj-home = '/var/lib/opendj'
   $common_opts = "-h ${opendj_host} -D '${opendj_admin_user}' -w ${opendj_admin_password}"
   $ldapsearch  = "${opendj_home}/bin/ldapsearch ${common_opts} -p ${opendj_ldap_port}"
   $ldapmodify  = "${opendj_home}/bin/ldapmodify ${common_opts} -p ${opendj_ldap_port}"
@@ -27,24 +39,24 @@ class openam::datastore (
   }
 
   file { "/var/tmp/am-configstore-suffix.ldif":
-    ensure    => present,
-    content   => "dn: ${openam_configstore_suffix}\nobjectclass: top\nobjectclass: domain\ndc: config\n",
+    ensure  => present,
+    content => "dn: ${openam_configstore_suffix}\nobjectclass: top\nobjectclass: domain\ndc: config\n",
   }
 
   file { "/var/tmp/am-userstore-suffix.ldif":
-    ensure    => present,
-    content   => "dn: ${openam_userstore_suffix}\nobjectclass: top\nobjectclass: domain\ndc: users\n",
+    ensure  => present,
+    content => "dn: ${openam_userstore_suffix}\nobjectclass: top\nobjectclass: domain\ndc: users\n",
   }
 
   exec { "create config suffix":
     command => "${ldapmodify} -a -f /var/tmp/am-configstore-suffix.ldif",
-    unless  => "${ldapsearch} -s base -b ${openam_userstore_suffix} '(objectclass=*)' | grep ^dn",
+    unless  => "${ldapsearch} -s base -b ${openam_configstore_suffix} '(objectclass=*)' | grep ^dn",
     require => [ Exec["create config backend"], File["/var/tmp/am-configstore-suffix.ldif"] ],
   }
 
   exec { "create users suffix":
-    command  => "${ldapmodify} -a -f /var/tmp/am-userstore-suffix.ldif",
-    unless   => "${ldapsearch} -s base -b ${openam_userstore_suffix} '(objectclass=*)' | grep ^dn",
-    require  => [ Exec["create users backend"], File["/var/tmp/am-userstore-suffix.ldif"] ],
+    command => "${ldapmodify} -a -f /var/tmp/am-userstore-suffix.ldif",
+    unless  => "${ldapsearch} -s base -b ${openam_userstore_suffix} '(objectclass=*)' | grep ^dn",
+    require => [ Exec["create users backend"], File["/var/tmp/am-userstore-suffix.ldif"] ],
   }
 }
