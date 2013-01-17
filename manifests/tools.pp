@@ -11,7 +11,7 @@
 # Copyright (c) 2013 Conduct AS
 #
 class openam::tools (
-  $ssoadm = hiera('openam_ssoadm_path', '/usr/local/bin/ssoadm'),
+  $ssoadm = hiera('openam_ssoadm', '/usr/local/bin/ssoadm'),
 ) {
 
   package { 'unzip': ensure => present }

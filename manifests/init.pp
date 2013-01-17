@@ -24,6 +24,8 @@ class openam(
   $amldapuser         = hiera('openam_amldapuser'),
   $config_dir         = hiera('openam_config_dir'),
   $cookie_domain      = hiera('openam_cookie_domain'),
+  $cookie_name        = hiera('openam_cookie_name', 'iPlanetDirectoryPro'),
+  $cookie_secure      = hiera('openam_cookie_secure', false),
   $log_dir            = hiera('openam_log_dir'),
   $deployment_uri     = hiera('openam_deployment_uri'),
   $locale             = hiera('openam_locale'),

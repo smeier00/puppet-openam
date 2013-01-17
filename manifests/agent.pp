@@ -11,20 +11,32 @@
 # Copyright (c) 2013 Conduct AS
 #
 define openam::agent (
-  $type       = 'WebAgent',
-  $ssoonly    = false,
-  $logrotate  = false,
-  $debuglevel = 'Error',
+  $type              = 'WebAgent',
+  $ssoonly           = false,
+  $logrotate         = false,
+  $debuglevel        = 'Error',
+  $protocol          = 'http',
+  $port              = 80,
+  $host,
+  $logout_urls       = [ "${openam::site_url}/UI/Logout" ],
+  $login_urls        = [ "${openam::site_url}/UI/Login" ],
+  $notification_url  = "${protocol}://${host}:${port}/UpdateAgentCacheServlet?shortcircuit=false",
+  $agent_logout_urls = [],
+  $notenforced_ips   = [],
+  $notenforced_urls  = [],
+  $reset_cookies     = [],
+  $properties        = {},
+  $timeout           = 2,
+  $password,
   $realm,
-  $url,
 ) {
-  $logout_urls        = [ "${openam::site_url}/UI/Logout?realm=${realm}" ]
-  $login_urls         = [ "${openam::site_url}/UI/Login?realm=${realm}" ]
-  $notification_url   = "${url}/UpdateAgentCacheServlet?shortcircuit=false"
-  $cdcservlet_url     = "${openam::site_url}/cdcservlet"
   $agent_server_url   = "${openam::site_url}"
+  $realm_real         = regsubst($realm, '^/', '')
+  $realm_prefix       = regsubst($realm_real, '/', '_', 'G')
+  $agent_url          = "${protocol}://${host}:${port}"
   $agent_profile_dir  = "${openam::config_dir}/.puppet/agents"
-  $agent_profile_file = "${agent_profile_dir}/${type}_${title}.properties"
+  $agent_profile_file = "${agent_profile_dir}/${realm_prefix}_${type}_${title}.properties"
+  $password_hashed    = strip( template("${module_name}/agent_password.erb") )
 
   file { "${openam::config_dir}/.puppet":
     ensure => directory,
@@ -49,15 +61,15 @@ define openam::agent (
   }
 
   exec { "update agent profile":
-    command     => "${openam::tools::ssoadm} create-agent -e ${realm} -t ${type} -b ${name} -s ${agent_server_url} -g ${url} -D ${agent_profile_file}",
-    onlyif      => "${openam::tools::ssoadm} list-agents -e ${realm} -t ${type} | grep ^'${name} '",
-    refreshonly => true,
+    command     => "${openam::tools::ssoadm} update-agent -e ${realm_real} -b ${name} -D ${agent_profile_file}",
+    onlyif      => "${openam::tools::ssoadm} list-agents -e ${realm_real} -t ${type} | grep ^'${name} '",
     notify      => Exec["create agent profile"],
+    refreshonly => true,
   }
   
   exec { "create agent profile":
-    command     => "${openam::tools::ssoadm} create-agent -e ${realm} -t ${type} -b ${name} -s ${agent_server_url} -g ${url} -D ${agent_profile_file}",
-    unless      => "${openam::tools::ssoadm} list-agents -e ${realm} -t ${type} | grep ^'${name} '", 
+    command     => "${openam::tools::ssoadm} create-agent -e ${realm_real} -t ${type} -b ${name} -s ${agent_server_url} -g ${agent_url} -D ${agent_profile_file}",
+    unless      => "${openam::tools::ssoadm} list-agents -e ${realm_real} -t ${type} | grep ^'${name} '", 
     refreshonly => true,
   } 
 }

@@ -16,12 +16,13 @@ The following parameters controls the initial configuration of OpenAM:
   * `amadmin`: The OpenAM amadmin user password
   * `amldapuser`: The OpenAM amldapuser password (can't be the same as amadmin)
   * `deployment_uri`: The OpenAM deployment URI, e.g. `/sso`
-  * `site_url`: The OpenAM site URL, e.g. https://idp.example.com:443/sso
+  * `site_url`: The OpenAM site URL, e.g. `https://idp.example.com:443/sso`
   * `server_protocol`: The OpenAM server protocol, `http` or `https`
   * `cookie_domain`: The OpenAM cookie domain, e.g. `.example.com`
   * `config_dir`: The OpenAM configuration directory, e.g. `/opt/openam`
   * `log_dir`: The destination directory for OpenAM logs, e.g. `/var/log`
   * `locale`: The OpenAM locale, e.g. `en_US`
+  * `ssoadm`: The path to install the ssoadm wrapper, default `/usr/local/bin/ssoadm`
   * `encryption_key`: The OpenAM encryption key
   * `userstore_binddn`: The LDAP user for the OpenAM user store, e.g. `cn=Directory Manager`
   * `userstore_bindpw`: The password for the user specified in `userstore_binddn`
@@ -30,7 +31,7 @@ The following parameters controls the initial configuration of OpenAM:
   * `configstore_bindpw`: The password for the user specified in `configstore_binddn`
   * `configstore_suffix`: The root suffix for the OpenAM configuration store
 
-If not provided, parameters are looked up with `hiera()` prefixed with `openam_`,
+If not provided, parameters are prefixed with `openam_`and looked up with `hiera()`,
 e.g. `openam_version`. In addition, the following parameters from the `opendj`
 module are used to determine the host and port settings during the initial setup:
 
@@ -44,5 +45,5 @@ module are used to determine the host and port settings during the initial setup
 A small subset of OpenAM configuration can be controlled with the following Puppet defines:
 
   * `openam::realm { $realm: }`: Add `$realm` to the OpenAM configuration
-  * `openam::agent { $agent: realm => $realm, password => $password, type => $type, url => $url }`
-
+  * `openam::agent { $agent: realm => $realm, password => $password, host => $host }`
+}
