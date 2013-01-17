@@ -1,4 +1,4 @@
-# == Class: openam::datastore
+# == Class: openam::bootstrap::datastore
 #
 # Configuration of user and configuration stores for OpenAM
 #
@@ -11,7 +11,7 @@
 # Copyright (c) 2013 Conduct AS
 #
 
-class openam::datastore {
+class openam::bootstrap::datastore {
 
   $common_opts = "-h ${opendj::host} -D '${opendj::admin_user}' -w ${opendj::admin_password}"
   $ldapsearch  = "${opendj::home}/bin/ldapsearch ${common_opts} -p ${opendj::ldap_port}"

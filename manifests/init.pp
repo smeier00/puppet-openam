@@ -41,18 +41,9 @@ class openam(
   $configstore_binddn = hiera('openam_configstore_binddn'),
   $configstore_bindpw = hiera('openam_configstore_bindpw'),
 ) {
-  
 
-  include openam::tomcat
-  include openam::deploy
-  include openam::datastore
-  include openam::config
-  include openam::logs
-  include openam::tools
+  include tomcat  
+  include openam::bootstrap
 
-  Class['opendj']            -> Class['openam::deploy']
-  Class['openam::deploy']    -> Class['openam::datastore']
-  Class['openam::datastore'] -> Class['openam::config']
-  Class['openam::config']    -> Class['openam::logs']
-  Class['openam::logs']      -> Class['openam::tools']
+  Class['opendj']            -> Class['openam::bootstrap']
 }

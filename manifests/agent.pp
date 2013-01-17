@@ -1,6 +1,6 @@
-# == Class: openam::agent
+# == Define: openam::agent
 #
-# Management of OpenAM agent profiles.
+# Define for management of OpenAM agent profiles.
 #
 # === Authors
 #
@@ -61,15 +61,15 @@ define openam::agent (
   }
 
   exec { "update agent profile":
-    command     => "${openam::tools::ssoadm} update-agent -e ${realm_real} -b ${name} -D ${agent_profile_file}",
-    onlyif      => "${openam::tools::ssoadm} list-agents -e ${realm_real} -t ${type} | grep ^'${name} '",
+    command     => "${openam::bootstrap::tools::ssoadm} update-agent -e ${realm_real} -b ${name} -D ${agent_profile_file}",
+    onlyif      => "${openam::bootstrap::tools::ssoadm} list-agents -e ${realm_real} -t ${type} | grep ^'${name} '",
     notify      => Exec["create agent profile"],
     refreshonly => true,
   }
   
   exec { "create agent profile":
-    command     => "${openam::tools::ssoadm} create-agent -e ${realm_real} -t ${type} -b ${name} -s ${agent_server_url} -g ${agent_url} -D ${agent_profile_file}",
-    unless      => "${openam::tools::ssoadm} list-agents -e ${realm_real} -t ${type} | grep ^'${name} '", 
+    command     => "${openam::bootstrap::tools::ssoadm} create-agent -e ${realm_real} -t ${type} -b ${name} -s ${agent_server_url} -g ${agent_url} -D ${agent_profile_file}",
+    unless      => "${openam::bootstrap::tools::ssoadm} list-agents -e ${realm_real} -t ${type} | grep ^'${name} '", 
     refreshonly => true,
   } 
 }

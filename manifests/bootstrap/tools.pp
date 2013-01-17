@@ -1,6 +1,6 @@
-# == Class: openam::tools
+# == Class: openam::bootstrap::tools
 #
-# Module for deployment of ssoAdminTools.
+# Deployment of ssoAdminTools.
 #
 # === Authors
 #
@@ -10,7 +10,7 @@
 #
 # Copyright (c) 2013 Conduct AS
 #
-class openam::tools (
+class openam::bootstrap::tools (
   $ssoadm = hiera('openam_ssoadm', '/usr/local/bin/ssoadm'),
 ) {
 

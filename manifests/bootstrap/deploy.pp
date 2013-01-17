@@ -1,6 +1,6 @@
-# == Class: openam::deploy
+# == Class: openam::bootstrap::deploy
 #
-# Module for deployment of ForgeRock OpenAM.
+# Deployment of ForgeRock OpenAM application.
 #
 # === Examples
 #
@@ -13,7 +13,7 @@
 # Copyright (c) 2013 Conduct AS
 #
 
-class openam::deploy {
+class openam::bootstrap::deploy {
   $war = "openam_${openam::version}.war"
 
   file { "/var/tmp/${war}":

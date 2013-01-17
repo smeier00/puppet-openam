@@ -1,4 +1,4 @@
-# == Class: openam::logs
+# == Class: openam::bootstrap::logs
 #
 # Symlinks OpenAM log directories to a more suited location.
 #
@@ -10,7 +10,7 @@
 #
 # Copyright (c) 2013 Conduct AS
 #
-class openam::logs {
+class openam::bootstrap::logs {
 
   file { [ "${openam::log_dir}",
            "${openam::log_dir}/logs",

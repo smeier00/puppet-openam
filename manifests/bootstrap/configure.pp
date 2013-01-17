@@ -1,4 +1,18 @@
-class openam::config {
+# == Class: openam::bootstrap::configure
+#
+# Initial configuration of ForgeRock OpenAM
+#
+# === Examples
+#
+# === Authors
+#
+# Conduct AS <iam-nsb@conduct.no>
+#
+# === Copyright
+#
+# Copyright (c) 2013 Conduct AS
+#
+class openam::bootstrap::configure {
   $server_url = "${openam::server_protocol}://${fqdn}:${openam::server_port}"
   
   file { "${openam::tomcat_home}/.openssocfg":
@@ -32,7 +46,13 @@ class openam::config {
 
   exec { "configure openam":
     command => "${openam::java_home}/bin/java -jar /dev/shm/configurator.jar -f /dev/shm/configurator.properties",
-    require => [ File["/dev/shm/configurator.jar"], File["${openam::config_dir}"] ],
+    require => [
+                  Exec["deploy openam"],
+                  File["${openam::tomcat_home}/.openssocfg"],
+                  File["/dev/shm/configurator.jar"],
+                  File["/dev/shm/configurator.properties"],
+                  File["${openam::config_dir}"],
+    ],
     creates => "${openam::config_dir}/bootstrap",
     notify => Service["tomcat6"],
   }

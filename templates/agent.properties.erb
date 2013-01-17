@@ -16,5 +16,5 @@ com.sun.identity.agents.config.locale=<%= scope.lookupvar('openam::locale') %>
 com.sun.identity.agents.config.repository.location=centralized
 com.sun.identity.agents.config.sso.only=<%= ssoonly %>
 userpassword=<%= @password_hashed %>
-sunIdentityServerDeviceKeyValue[0]=<%= @protocol %>://<%= @host %>:<%= @port %>/
+sunIdentityServerDeviceKeyValue=<%= @protocol %>://<%= @host %>:<%= @port %>/
 <% @properties.each do |key,value| %><%= @key %>=<%= @value %><% end %>
