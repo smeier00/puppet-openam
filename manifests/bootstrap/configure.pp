@@ -54,6 +54,6 @@ class openam::bootstrap::configure {
                   File["${openam::config_dir}"],
     ],
     creates => "${openam::config_dir}/bootstrap",
-    notify => Service["tomcat6"],
+    notify => Service["tomcat-openam"],
   }
 }
