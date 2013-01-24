@@ -6,7 +6,7 @@
 #
 # === Authors
 #
-# Conduct AS <iam-nsb@conduct.no>
+# Conduct AS <si@conduct.no>
 #
 # === Copyright
 #
