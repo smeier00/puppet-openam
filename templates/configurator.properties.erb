@@ -1,4 +1,4 @@
-SERVER_URL=<%= @server_url %>
+SERVER_URL=<%= server_url %>
 DEPLOYMENT_URI=<%= scope.lookupvar('openam::deployment_uri') %>
 BASE_DIR=<%= scope.lookupvar('openam::config_dir') %>
 locale=<%= scope.lookupvar('openam::locale') %>
@@ -26,13 +26,9 @@ USERSTORE_SUFFIX=<%= scope.lookupvar('openam::userstore_suffix') %>
 USERSTORE_MGRDN=<%= scope.lookupvar('openam::userstore_binddn') %>
 USERSTORE_PASSWD=<%= scope.lookupvar('openam::userstore_bindpw') %>
 
-<% if @master %>
-# Add to existing OpenAM deployment
-existingserverid=<%= @master %>
-<% else %>
-<% if scope.lookupvar('openam::site_url') %>
-# Create site if parameter is provided
+<% if scope.lookupvar('openam::master') == @fqdn %>
 LB_SITE_NAME=<%= @environment %>
 LB_PRIMARY_URL=<%= scope.lookupvar('openam::site_url') %>
-<% end %>
+<% else %>
+existingserverid=<%= scope.lookupvar('openam::master') %>
 <% end %>

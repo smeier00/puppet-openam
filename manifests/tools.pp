@@ -53,7 +53,7 @@ class openam::tools {
     content => "${openam::amadmin}\n",
   }
 
-  file { "${ssoadm}":
+  file { "${openam::ssoadm}":
     ensure  => present,
     owner   => root,
     group   => root,
