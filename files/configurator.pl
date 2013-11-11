@@ -10,12 +10,11 @@ use strict;
 use warnings;
 use Getopt::Long;
 use LWP::UserAgent;
-use Data::Dumper;
 
 my $config;
 my %options;
 GetOptions( 'file=s' => \$config ) || &usage;
-( $config and -f $config ) ? configure($config) : usage();
+( $config and -f $config ) ? configure($config) : &usage;
 
 
 sub configure {

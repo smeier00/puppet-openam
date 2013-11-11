@@ -13,6 +13,9 @@ The following parameters controls the initial configuration of OpenAM:
 
   * `version`: The OpenAM version number
   * `build`: OpenAM build identifier (optional)
+  * `java_home`: Java home
+  * `tomcat_user`: The POSIX user running Tomcat
+  * `tomcat_home`: The home directory for Tomcat
   * `amadmin`: The OpenAM amadmin user password
   * `amldapuser`: The OpenAM amldapuser password (can't be the same as amadmin)
   * `deployment_uri`: The OpenAM deployment URI, e.g. `/sso`
@@ -30,20 +33,3 @@ The following parameters controls the initial configuration of OpenAM:
   * `configstore_binddn`: The LDAP user for the OpenAM configuration store, e.g. `cn=Directory Manager`
   * `configstore_bindpw`: The password for the user specified in `configstore_binddn`
   * `configstore_suffix`: The root suffix for the OpenAM configuration store
-
-If not provided, parameters are prefixed with `openam_`and looked up with `hiera()`,
-e.g. `openam_version`. In addition, the following parameters from the `opendj`
-module are used to determine the host and port settings during the initial setup:
-
-  * `opendj::host`: IP or FQDN for the OpenDJ host (or VIP if loadbalanced)
-  * `opendj::ldap_port`: The OpenDJ LDAP port, e.g. `1389`
-  * `opendj::admin_user`: The OpenDJ admin user, e.g. `cn=Directory Manager`
-  * `opendj::admin_password`: The OpenDJ admin password
-
-## Managing configuration
-
-A small subset of OpenAM configuration can be controlled with the following Puppet defines:
-
-  * `openam::realm { $realm: }`: Add `$realm` to the OpenAM configuration
-  * `openam::agent { $agent: realm => $realm, password => $password, host => $host }`
-}
