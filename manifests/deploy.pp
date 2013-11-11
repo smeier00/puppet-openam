@@ -1,19 +1,17 @@
-# == Class: openam::bootstrap::deploy
+# == Class: openam::deploy
 #
-# Deployment of ForgeRock OpenAM application.
-#
-# === Examples
+# Module for deployment of ForgeRock OpenAM.
 #
 # === Authors
 #
-# Conduct AS <si@conduct.no>
+# Eivind Mikkelsen <eivindm@conduct.no>
 #
 # === Copyright
 #
 # Copyright (c) 2013 Conduct AS
 #
 
-class openam::bootstrap::deploy {
+class openam::deploy {
   $war = "openam_${openam::version}.war"
 
   file { "/var/tmp/${war}":
@@ -21,7 +19,7 @@ class openam::bootstrap::deploy {
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
     mode   => 0755,
-    source => "puppet:///openam/${war}",
+    source => "puppet:///modules/${module_name}/${war}",
   }
 
   exec { "deploy openam":

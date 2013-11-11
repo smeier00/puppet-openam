@@ -1,21 +1,20 @@
-# == Class: openam::bootstrap::configure
+# == Class: openam::config
 #
-# Initial configuration of ForgeRock OpenAM
-#
-# === Examples
+# Module for initial configuration of ForgeRock OpenAM.
 #
 # === Authors
 #
-# Conduct AS <si@conduct.no>
+# Eivind Mikkelsen <eivindm@conduct.no>
 #
 # === Copyright
 #
 # Copyright (c) 2013 Conduct AS
 #
-class openam::bootstrap::configure {
+
+class openam::config {
   $server_url = "${openam::server_protocol}://${fqdn}:${openam::server_port}"
   
-  file { "${openam::tomcat_home}/.openssocfg":
+  file { "${openam::tomcat_home}/.openamcfg":
     ensure => directory,
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
@@ -30,29 +29,23 @@ class openam::bootstrap::configure {
     content => template("${module_name}/configurator.properties.erb"),
   }
 
-  file { "/dev/shm/configurator.jar":
+  file { "/dev/shm/configurator.pl":
     owner   => root,
     group   => root,
     mode    => 700,
     require => File["/dev/shm/configurator.properties"], 
-    source  => "puppet:///modules/openam/configurator.jar",
+    source  => "puppet:///modules/${module_name}/configurator.pl",
   }
 
-  file { "${config_dir}":
+  file { "${openam::config_dir}":
     ensure => directory,
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
   }
 
   exec { "configure openam":
-    command => "${openam::java_home}/bin/java -jar /dev/shm/configurator.jar -f /dev/shm/configurator.properties",
-    require => [
-                  Exec["deploy openam"],
-                  File["${openam::tomcat_home}/.openssocfg"],
-                  File["/dev/shm/configurator.jar"],
-                  File["/dev/shm/configurator.properties"],
-                  File["${openam::config_dir}"],
-    ],
+    command => "/dev/shm/configurator.pl -f /dev/shm/configurator.properties",
+    require => [ File["/dev/shm/configurator.pl"], File["${openam::config_dir}"] ],
     creates => "${openam::config_dir}/bootstrap",
     notify => Service["tomcat-openam"],
   }

@@ -1,18 +1,16 @@
-# == Class: openam::bootstrap::tools
+# == Class: openam::tools
 #
-# Deployment of ssoAdminTools.
+# Module for deployment of ssoAdminTools.
 #
 # === Authors
 #
-# Conduct AS <si@conduct.no>
+# Eivind Mikkelsen <eivindm@conduct.no>
 #
 # === Copyright
 #
 # Copyright (c) 2013 Conduct AS
 #
-class openam::bootstrap::tools (
-  $ssoadm = hiera('openam_ssoadm', '/usr/local/bin/ssoadm'),
-) {
+class openam::tools {
 
   package { 'unzip': ensure => present }
 
@@ -28,7 +26,7 @@ class openam::bootstrap::tools (
     ensure => present,
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
-    source => "puppet:///${module_name}/ssoAdminTools_${openam::version}.zip",
+    source => "puppet:///modules/${module_name}/ssoAdminTools_${openam::version}.zip",
   }
 
   exec { "deploy ssoadm":
@@ -38,7 +36,6 @@ class openam::bootstrap::tools (
     command => "/usr/bin/unzip ssoAdminTools_${openam::version}.zip -d ${openam::config_dir}/cli/",
   }
 
-  # FIXME: This is ugly.
   exec { "configure ssoadm":
     cwd         => "${openam::config_dir}/cli",
     creates     => "${openam::config_dir}/cli${openam::deployment_uri}",

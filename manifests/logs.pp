@@ -1,16 +1,16 @@
-# == Class: openam::bootstrap::logs
+# == Class: openam::logs
 #
-# Symlinks OpenAM log directories to a more suited location.
+# Symlinks OpenAM log directories to a suitable location.
 #
 # === Authors
 #
-# Conduct AS <si@conduct.no>
+# Eivind Mikkelsen <eivindm@conduct.no>
 #
 # === Copyright
 #
 # Copyright (c) 2013 Conduct AS
 #
-class openam::bootstrap::logs {
+class openam::logs {
 
   file { [ "${openam::log_dir}",
            "${openam::log_dir}/logs",
