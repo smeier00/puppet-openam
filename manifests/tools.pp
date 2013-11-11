@@ -26,7 +26,7 @@ class openam::tools {
     ensure => present,
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
-    source => "puppet:///modules/${module_name}/ssoAdminTools_${openam::version}.zip",
+    source => "puppet:///files/${module_name}/ssoAdminTools_${openam::version}.zip",
   }
 
   exec { "deploy ssoadm":

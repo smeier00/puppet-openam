@@ -19,7 +19,7 @@ class openam::deploy {
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
     mode   => 0755,
-    source => "puppet:///modules/${module_name}/${war}",
+    source => "puppet:///files/${module_name}/${war}",
   }
 
   exec { "deploy openam":
