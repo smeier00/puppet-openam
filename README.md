@@ -12,7 +12,6 @@ to `/config/configurator` from the included `configurator.pl` script.
 The following parameters controls the initial configuration of OpenAM:
 
   * `version`: The OpenAM version number
-  * `build`: OpenAM build identifier (optional)
   * `java_home`: Java home
   * `tomcat_user`: The POSIX user running Tomcat
   * `tomcat_home`: The home directory for Tomcat

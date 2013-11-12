@@ -14,18 +14,12 @@
 class openam::deploy {
   $war = "openam_${openam::version}.war"
 
-  file { "/var/tmp/${war}":
+  file { "${openam::tomcat_home}/webapps${openam::deployment_uri}.war":
     ensure => present,
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
     mode   => 0755,
-    source => "puppet:///files/${module_name}/${war}",
-  }
-
-  exec { "deploy openam":
-    cwd     => '/var/tmp',
-    command => "/bin/cp /var/tmp/${war} ${openam::tomcat_home}/webapps${openam::deployment_uri}.war",
-    require => File["/var/tmp/${war}"],
-    creates => "${openam::tomcat_home}/webapps${openam::deployment_uri}",
+    source => "puppet:///files/${module_name}/${environment}/${war}",
+    notify => Service['tomcat-openam']
   }
 }
