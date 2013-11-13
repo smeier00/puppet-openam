@@ -30,7 +30,7 @@ sub configure {
   }
   close($fh);
 
-  configurator(\%options);
+  return configurator(\%options);
 }
 
 sub usage() {
@@ -49,6 +49,13 @@ sub configurator {
   $options->{'AMLDAPUSERPASSWD_CONFIRM'}  = $options->{'AMLDAPUSERPASSWD'};
 
   my $configurator = $options->{'SERVER_URL'} . $options->{'DEPLOYMENT_URI'} . '/config/configurator';
+
+  sleep(60); // OpenAM needs time to start up (in case refresh was triggered)
   my $response = $ua->post( $configurator, $options );
-  print $response->content . "\n";
+  if ($response->is_success and $response->content =~ m/S|success/) {
+    return 0;
+  } else {
+    print $response->content . "\n";
+    return 1;
+  }
 }

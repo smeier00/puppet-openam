@@ -13,6 +13,9 @@
 
 class openam::config {
   $server_url = "${openam::server_protocol}://${fqdn}:${openam::server_port}"
+ 
+  package { "perl-Crypt-SSLeay": ensure => installed }
+  package { "perl-libwww-perl": ensure => installed }
   
   file { "${openam::tomcat_home}/.openamcfg":
     ensure => directory,
@@ -45,7 +48,12 @@ class openam::config {
 
   exec { "configure openam":
     command => "/dev/shm/configurator.pl -f /dev/shm/configurator.properties",
-    require => [ File["/dev/shm/configurator.pl"], File["${openam::config_dir}"] ],
+    require => [
+      File["/dev/shm/configurator.pl"],
+      File["${openam::config_dir}"],
+      Package["perl-Crypt-SSLeay"],
+      Package["perl-libwww-perl"]
+    ],
     creates => "${openam::config_dir}/bootstrap",
     notify => Service["tomcat-openam"],
   }
