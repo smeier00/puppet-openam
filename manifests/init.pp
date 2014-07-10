@@ -13,7 +13,7 @@
 
 class openam(
   $version            = hiera('openam::version'),
-  $master             = hiera('openam::master', undef),
+  $master             = hiera('openam::master'),
   $java_home          = hiera('openam::java_home'),
   $tomcat_user        = hiera('openam::tomcat_user'),
   $tomcat_home        = hiera('openam::tomcat_home'),
