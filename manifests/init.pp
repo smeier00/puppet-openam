@@ -30,13 +30,18 @@ class openam(
   $server_protocol    = hiera('openam::server_protocol'),
   $ssoadm             = hiera('openam::ssoadm', '/usr/local/bin/ssoadm'),
 
-  $userstore_suffix   = hiera('openam::userstore_suffix'),
-  $userstore_binddn   = hiera('openam::userstore_binddn'),
-  $userstore_bindpw   = hiera('openam::userstore_bindpw'),
-  $configstore_suffix = hiera('openam::configstore_suffix'),
-  $configstore_binddn = hiera('openam::configstore_binddn'),
-  $configstore_bindpw = hiera('openam::configstore_bindpw'),
-  $ldap_host          = hiera('opendj::host'),
+  $userstore_host         = hiera('openam::userstore_host'),
+  $userstore_ldap_port    = hiera('openam::userstore_ldap_port'),
+  $userstore_suffix       = hiera('openam::userstore_suffix'),
+  $userstore_binddn       = hiera('openam::userstore_binddn'),
+  $userstore_bindpw       = hiera('openam::userstore_bindpw'),
+  $configstore_host       = hiera('openam::configstore_host'),
+  $configstore_ldap_port  = hiera('openam::configstore_ldap_port'),
+  $configstore_admin_port = hiera('openam::configstore_admin_port'),
+  $configstore_jmx_port   = hiera('openam::configstore_jmx_port'),
+  $configstore_suffix     = hiera('openam::configstore_suffix'),
+  $configstore_binddn     = hiera('openam::configstore_binddn'),
+  $configstore_bindpw     = hiera('openam::configstore_bindpw'),
 
 ) {
 
