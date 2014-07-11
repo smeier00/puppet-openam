@@ -30,7 +30,7 @@ sub configure {
   }
   close($fh);
 
-  return configurator(\%options);
+  configurator(\%options);
 }
 
 sub usage() {
@@ -53,9 +53,9 @@ sub configurator {
   sleep(60); # OpenAM needs time to start up (in case refresh was triggered)
   my $response = $ua->post( $configurator, $options );
   if ($response->is_success and $response->content =~ m/S|success/) {
-    return 0;
+    exit(0);
   } else {
-    print $response->content . "\n";
-    return 1;
+    print STDERR $response->content . "\n";
+    exit(1);
   }
 }
