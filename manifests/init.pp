@@ -21,7 +21,7 @@ class openam(
   $amldapuser         = hiera('openam::amldapuser'),
   $config_dir         = hiera('openam::config_dir', '/opt/openam'),
   $cookie_domain      = hiera('openam::cookie_domain'),
-  $log_dir            = hiera('openam::log_dir', '/var/log'),
+  $log_dir            = hiera('openam::log_dir', '/var/log/openam'),
   $deployment_uri     = hiera('openam::deployment_uri'),
   $locale             = hiera('openam::locale', 'en_US'),
   $encryption_key     = hiera('openam::encryption_key'),
