@@ -33,6 +33,15 @@ class openam::logs {
     force     => true,
   }
 
+  #file { "${openam::config_dir}${openam::deployment_uri}":
+  #  ensure    => directory,
+  #  require   => File["${openam::config_dir}"],
+  #  force     => true,
+  #  owner   => "${openam::tomcat_user}",
+  #  group   => "${openam::tomcat_user}",
+  #  mode    =>  0755,
+  #}
+
   file { "${openam::config_dir}${openam::deployment_uri}/debug":
     ensure    => link,
     target    => "${openam::log_dir}/debug",

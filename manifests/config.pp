@@ -55,6 +55,9 @@ class openam::config {
       Package["perl-libwww-perl"]
     ],
     creates => "${openam::config_dir}/bootstrap",
-    notify => Service["tomcat-openam"],
+    notify => [ 
+      Service["tomcat-openam"],
+      Exec['wait_for_tomcat'],
+    ]
   }
 }

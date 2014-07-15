@@ -12,6 +12,10 @@
 #
 class openam::tools {
 
+  Exec {
+    path => '/usr/bin:/usr/sbin/:/bin:/sbin:/usr/local/bin:/usr/local/sbin',
+  }
+
   package { 'unzip': ensure => present }
 
   file { "${openam::config_dir}/cli":
@@ -26,7 +30,7 @@ class openam::tools {
     ensure => present,
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
-    source => "puppet:///files/${module_name}/ssoAdminTools_${openam::version}.zip",
+    source => "puppet:///modules/${module_name}/ssoAdminTools_${openam::version}.zip",
   }
 
   exec { "deploy ssoadm":
@@ -40,7 +44,7 @@ class openam::tools {
     cwd         => "${openam::config_dir}/cli",
     creates     => "${openam::config_dir}/cli${openam::deployment_uri}",
     environment => "JAVA_HOME=${openam::java_home}",
-    command     => "${openam::config_dir}/cli/setup -p ${openam::config_dir} -d ${openam::log_dir}/debug -l ${openam::log_dir}/logs",
+    command    => "${openam::config_dir}/cli/setup -p ${openam::config_dir} -d ${openam::log_dir}/debug -l ${openam::log_dir}/logs",
     require     => Exec["deploy ssoadm"],
   }
 

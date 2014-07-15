@@ -8,7 +8,8 @@ ADMIN_PWD=<%= @amadmin %>
 AMLDAPUSERPASSWD=<%= @amldapuser %>
 COOKIE_DOMAIN=<%= @cookie_domain %>
 
-DATA_STORE=dirServer
+DATA_STORE=embedded
+#DATA_STORE=dirServer
 DIRECTORY_SSL=SIMPLE
 DIRECTORY_SERVER=<%= @configstore_host %>
 DIRECTORY_PORT=<%= @configstore_ldap_port %>
@@ -18,13 +19,13 @@ ROOT_SUFFIX=<%= @configstore_suffix %>
 DS_DIRMGRDN=<%= @configstore_binddn %>
 DS_DIRMGRPASSWD=<%= @configstore_bindpw %>
 
-USERSTORE_TYPE=LDAPv3ForOpenDS
-USERSTORE_SSL=SIMPLE
-USERSTORE_HOST=<%= @userstore_host %>
-USERSTORE_PORT=<%= @userstore_ldap_port %>
-USERSTORE_SUFFIX=<%= @userstore_suffix %>
-USERSTORE_MGRDN=<%= @userstore_binddn %>
-USERSTORE_PASSWD=<%= @userstore_bindpw %>
+#USERSTORE_TYPE=LDAPv3ForOpenDS
+#USERSTORE_SSL=SIMPLE
+#USERSTORE_HOST=<%= @userstore_host %>
+#USERSTORE_PORT=<%= @userstore_ldap_port %>
+#USERSTORE_SUFFIX=<%= @userstore_suffix %>
+#USERSTORE_MGRDN=<%= @userstore_binddn %>
+#USERSTORE_PASSWD=<%= @userstore_bindpw %>
 
 <% if @master == @fqdn %>
 LB_SITE_NAME=<%= @environment %>

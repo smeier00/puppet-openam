@@ -19,7 +19,11 @@ class openam::deploy {
     owner  => "${openam::tomcat_user}",
     group  => "${openam::tomcat_user}",
     mode   => 0755,
-    source => "puppet:///files/${module_name}/${environment}/${war}",
-    notify => Service['tomcat-openam']
+    source => "puppet:///modules/${module_name}/${war}",
+    notify => [
+      Service["tomcat-openam"],
+      Exec['wait_for_tomcat'],
+    ]
+
   }
 }
