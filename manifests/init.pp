@@ -47,7 +47,7 @@ class openam(
 
   #Hack to wait for Tomcat to start.
   exec { 'wait_for_tomcat' :
-    command => "sleep 30",
+    command => "sleep 40",
     path => "/usr/bin:/bin",
   }
   include openam::deploy

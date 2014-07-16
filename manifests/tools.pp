@@ -38,6 +38,11 @@ class openam::tools {
     creates => "${openam::config_dir}/cli/setup",
     require => [ Exec["configure openam"], File["${openam::config_dir}/cli"], Package['unzip'] ],
     command => "/usr/bin/unzip ssoAdminTools_${openam::version}.zip -d ${openam::config_dir}/cli/",
+  } ->
+
+   exec { 'wait_for_tomcat_again' :
+    command => "sleep 30",
+    path => "/usr/bin:/bin",
   }
 
   exec { "configure ssoadm":
